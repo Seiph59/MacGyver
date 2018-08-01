@@ -1,3 +1,4 @@
+import os
 
 x = 0
 y = 0
@@ -21,7 +22,27 @@ for way in ways:
         if i is way:
             #print(myMap[i][2])
             myMap[i][2] = "Way"
-print(myMap)
+myMap[3][2] = "Start"
+myMap[217][2] = "Finish"
+
+""" Send the Structure in a file
+and manage the labyrinth from this file"""
+
+fileManagement = open('Labyrinth.txt', 'a')
+for point in myMap:
+    #print(point)
+    fileManagement.write(str(point) +"\n")
+fileManagement.close()
+#print(myMap)
+
+""" Read the file and all the structure """
+
+openFile = open('Labyrinth.txt', 'r')
+lignes = openFile.readlines()
+openFile.close()
+
+for ligne in lignes: 
+    print(ligne)
 
         
 

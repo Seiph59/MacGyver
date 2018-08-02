@@ -1,5 +1,6 @@
 import os
 
+os.remove('Labyrinth.txt')
 x = 0
 y = 0
 myMap = []
@@ -28,11 +29,14 @@ myMap[217][2] = "Finish"
 """ Send the Structure in a file
 and manage the labyrinth from this file"""
 
-fileManagement = open('Labyrinth.txt', 'a')
-for point in myMap:
-    #print(point)
-    fileManagement.write(str(point) +"\n")
-fileManagement.close()
+
+for y in range(len(myMap)):
+    fileManagement = open('Labyrinth.txt', 'a')
+    for point in myMap[y][2]:
+        #print(point)
+        fileManagement.write(str(point))
+    fileManagement.write(" \n")
+    fileManagement.close()
 #print(myMap)
 
 """ Read the file and all the structure """

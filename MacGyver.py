@@ -1,4 +1,24 @@
 import os
+import pygame
+from pygame.locals import * 
+
+pygame.init()
+
+fenetre = pygame.display.set_mode((640,480))
+
+icone = pygame.image.load("ressource/MacGyver.png")
+pygame.display.set_icon(icone)
+
+pygame.display.set_caption("MacGyver the game")
+
+fond = pygame.image.load("ressource/background.jpg").convert()
+fenetre.blit(fond,(0,0))
+pygame.display.flip()
+continuer = 1 
+
+while continuer: 
+    continuer = int(input())
+    
 
 os.remove('Labyrinth.txt')
 x = 0
@@ -17,12 +37,8 @@ while x <= 14:
 #print(len(myMap))
 #print(myMap)
 for way in ways: 
-    #print(passage)
-    for i in range(len(myMap)):
-        #print(i)
-        if i is way:
-            #print(myMap[i][2])
-            myMap[i][2] = "Way"
+    myMap[way][2] = "Way"
+
 myMap[3][2] = "Start"
 myMap[217][2] = "Finish"
 
@@ -45,8 +61,4 @@ openFile = open('Labyrinth.txt', 'r')
 lignes = openFile.readlines()
 openFile.close()
 
-for ligne in lignes: 
-    print(ligne)
-
-        
 

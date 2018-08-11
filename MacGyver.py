@@ -1,7 +1,7 @@
 import os
 import pygame
 from pygame.locals import * 
-from constants import ICONE,RESOLUTION,WINDOW_TITLE,BACKGROUND,SPRITESHEET,MACGYVER,GUARDIAN
+from constants import ICONE,RESOLUTION,WINDOW_TITLE,BACKGROUND,SPRITESHEET,MACGYVER,GUARDIAN,SYRINGE,NEEDLE,PLASTIC_TUBE,ETHER
 
 pygame.init()
 
@@ -12,26 +12,32 @@ def getPosition(getIndex):
 
     
 
-fenetre = pygame.display.set_mode((300,300))
+fenetre = pygame.display.set_mode((RESOLUTION))
 
 icone = pygame.image.load(ICONE)
 pygame.display.set_icon(icone)
 
 pygame.display.set_caption(WINDOW_TITLE)
 
-fond = pygame.image.load(BACKGROUND).convert()
 base = pygame.image.load(SPRITESHEET)
 macgyver = pygame.image.load(MACGYVER).convert_alpha()
 macgyver = pygame.transform.scale(macgyver,(19,19))
 guardian = pygame.image.load(GUARDIAN).convert_alpha()
 guardian = pygame.transform.scale(guardian,(19,19))
+ether = pygame.image.load(ETHER).convert_alpha()
+ether = pygame.transform.scale(ether,(19,19))
+needle = pygame.image.load(NEEDLE).convert_alpha()
+needle = pygame.transform.scale(needle,(19,19))
+syringe = pygame.image.load(SYRINGE).convert_alpha()
+syringe = pygame.transform.scale(syringe,(19,19))
+plasticTube = pygame.image.load(PLASTIC_TUBE).convert_alpha()
+plasticTube = pygame.transform.scale(plasticTube,(19,19))
+
 
 wall = base.subsurface((120,100,20,20))
 way = base.subsurface((20,0,20,20))
 start = base.subsurface((160,20,20,20))
 finish = base.subsurface((220,20,20,20))
-
-fenetre.blit(fond,(0,0))
 
 openFile = open('Labyrinth.txt', 'r')
 lignes = openFile.readlines()
@@ -50,8 +56,6 @@ for i in range(len(lignes)):
         #fenetre.blit(guardian,(getPosition(i)))
     pygame.display.flip()    
     
-    
-
 openFile.close() 
 
 

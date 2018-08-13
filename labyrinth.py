@@ -8,7 +8,7 @@ ways = [3,18,31,32,33,34,35,36,37,52,67,68,69,70,78,83,84,93,97,98,99,108,114,12
 175,176,177,190,192,193,202,203,204,205,217]
 
 if (os.path.exists ('Labyrinth.txt')):
-  os.remove('Labyrinth.txt')
+    os.remove('Labyrinth.txt')
 
 while x <= 14:
     while y <= 14:

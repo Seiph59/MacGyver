@@ -19,7 +19,6 @@ NEEDLE_IMG = "ressource/aiguille.png"
 SYRINGE_IMG = "ressource/seringue.png"
 ETHER_IMG = "ressource/ether.png"
 PLASTIC_TUBE_IMG = "ressource/tube_plastique.png"
-CONTINUER = 1
 BASE = pygame.image.load(SPRITESHEET)
 
 """ Base Textures """

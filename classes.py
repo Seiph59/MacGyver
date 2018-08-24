@@ -3,6 +3,7 @@
 
 import random
 import pygame
+from pygame.locals import KEYDOWN, K_RIGHT, K_LEFT, K_DOWN, K_UP
 import constants as const
 from labyrinth import WAYS
 
@@ -121,3 +122,140 @@ class Item:  # pylint: disable=too-few-public-methods
         self.counter = 0
         self.case_x = coordinate_x * const.SPRITE_SIZE
         self.case_y = coordinate_y * const.SPRITE_SIZE
+
+
+class MacGyverGame:
+
+    def __init__(self):
+        pygame.init()
+        self.window = pygame.display.set_mode((const.RESOLUTION))
+        icone = pygame.image.load(const.ICONE_IMG)
+        pygame.display.set_icon(icone)
+        pygame.display.set_caption(const.WINDOW_TITLE)
+        mac_gyver_image = pygame.image.load(const.MACGYVER).convert_alpha()
+        self.mac_gyver = pygame.transform.scale(mac_gyver_image, (19, 19))
+        guard_image = pygame.image.load(const.GUARDIAN).convert_alpha()
+        self.guard = pygame.transform.scale(guard_image, (19, 19))
+        ether_image = pygame.image.load(const.ETHER_IMG).convert_alpha()
+        self.ether = pygame.transform.scale(ether_image, (19, 19))
+        needle_image = pygame.image.load(const.NEEDLE_IMG).convert_alpha()
+        self.needle = pygame.transform.scale(needle_image, (19, 19))
+        # syringe = pygame.image.load(SYRINGE).convert_alpha()
+        # syringe = pygame.transform.scale(syringe,(19,19))
+        plastic_tube_image = pygame.image.load(const.PLASTIC_TUBE_IMG).convert_alpha()
+        self.plastic_tube = pygame.transform.scale(plastic_tube_image, (19, 19))
+
+        """ Writing """
+        self.comic_font = pygame.font.SysFont('Comic Sans MS', 45)
+        self.comic_font_inv = pygame.font.SysFont('Comic Sans MS', 15)
+        self.text_win = self.comic_font.render("YOU WIN !", True, (255, 255, 255))
+        self.text_lost = self.comic_font.render("YOU LOST !", True, (255, 255, 255))
+        self.inventory = self.comic_font_inv.render(" INVENTORY: ", True, (255, 255, 255))
+
+    def load_map(self, src):
+
+        """Random position for each Item """
+
+        random_index = random_position()
+        position_x = random_index[0]
+        position_y = random_index[1]
+        self.needle_item = Item(position_x, position_y)
+
+        random_index = random_position()
+        position_x = random_index[0]
+        position_y = random_index[1]
+        self.ether_item = Item(position_x, position_y)
+
+        random_index = random_position()
+        position_x = random_index[0]
+        position_y = random_index[1]
+        self.plastic_tube_item = Item(position_x, position_y)
+
+        self.level = Labyrinth(src)
+        self.level.display(self.window)
+
+        # Display the 3 Items
+
+        self.window.blit(self.needle, (self.needle_item.case_x, self.needle_item.case_y))
+        self.window.blit(self.ether, (self.ether_item.case_x, self.ether_item.case_y))
+        self.window.blit(self.plastic_tube, (self.plastic_tube_item.case_x, self.plastic_tube_item.case_y))
+
+
+        mac_gyver = MacGyver()
+        self.window.blit(self.mac_gyver, (mac_gyver.case_x, mac_gyver.case_y))
+        pygame.display.flip()
+
+    def start_game(self):
+        progress = 1
+        while progress:  # Loop of the game
+            pygame.time.Clock().tick(30)
+            # previousPosition = (mac.case_x, mac.case_y)
+            for event in pygame.event.get():
+
+                if event.type is pygame.QUIT:
+                    progress = 0
+
+                elif event.type == KEYDOWN:
+                    if event.key == K_RIGHT:
+                        mac_gyver.move('right')
+                        # window.blit(way,(previousPosition))
+                    elif event.key == K_LEFT:
+                        mac_gyver.move('left')
+                        # window.blit(way,(previousPosition))
+                    elif event.key == K_UP:
+                        mac_gyver.move('top')
+                        # window.blit(way,(previousPosition))
+                    elif event.key == K_DOWN:
+                        mac_gyver.move('bottom')
+
+            self.level.display(self.window)
+            self.window.blit(self.inventory, (10, 305))
+
+            if (mac_gyver.case_x == self.needle_item.case_x and
+                    mac_gyver.case_y == self.needle_item.case_y and self.needle_item.counter < 1):
+                self.needle_item.counter += 1
+
+            elif self.needle_item.counter != 1:
+                self.window.blit(self.needle, (self.needle_item.case_x, self.needle_item.case_y))
+            else:
+                self.window.blit(self.needle, (170, 305))
+
+            if (mac_gyver.case_x == self.ether_item.case_x
+                    and mac_gyver.case_y == self.ether_item.case_y
+                    and self.ether_item.counter < 1):
+
+                self.ether_item.counter += 1
+
+            elif self.ether_item.counter != 1:
+                self.window.blit(ETHER, (self.ether_item.case_x, self.ether_item.case_y))
+            else:
+                self.window.blit(ETHER, (200, 305))
+
+            if (mac_gyver.case_x == self.plastic_tube_item.case_x
+                    and mac_gyver.case_y == self.plastic_tube_item.case_y
+                    and self.plastic_tube_item.counter < 1):
+
+                self.plastic_tube_item.counter += 1
+
+            elif self.plastic_tube_item.counter != 1:
+                self.window.blit(PLASTIC_TUBE, (self.plastic_tube_item.case_x, self.plastic_tube_item.case_y))
+            else:
+                self.window.blit(PLASTIC_TUBE, (230, 310))
+            self.window.blit(MAC_GYVER, (mac_gyver.case_x, mac_gyver.case_y))
+            items = self.needle_item.counter + self.plastic_tube_item.counter + self.ether_item.counter
+            pygame.display.flip()
+
+            if get_index(mac_gyver.position_x, mac_gyver.position_y) == 202 and items == 3:
+                self.window.blit(self.text_win, (30, 110))
+                self.window.blit(const.FINISH, (get_position(217)))
+                pygame.display.flip()
+                pygame.time.delay(2000)
+                progress = 0
+
+            elif (get_index(mac_gyver.position_x, mac_gyver.position_y) == 202
+                and items != 3):
+                self.window.blit(self.text_lost, (30, 110))
+                self.window.blit(const.WAY, (get_position(202)))
+                pygame.display.flip()
+                pygame.time.delay(2000)
+                progress = 0

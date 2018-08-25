@@ -144,6 +144,7 @@ class MacGyverGame:
         # syringe = pygame.transform.scale(syringe,(19,19))
         plastic_tube_image = pygame.image.load(const.PLASTIC_TUBE_IMG).convert_alpha()
         self.plastic_tube = pygame.transform.scale(plastic_tube_image, (19, 19))
+        self.mac_gyver_char = MacGyver()
 
         """ Writing """
         self.comic_font = pygame.font.SysFont('Comic Sans MS', 45)
@@ -181,8 +182,8 @@ class MacGyverGame:
         self.window.blit(self.plastic_tube, (self.plastic_tube_item.case_x, self.plastic_tube_item.case_y))
 
 
-        mac_gyver = MacGyver()
-        self.window.blit(self.mac_gyver, (mac_gyver.case_x, mac_gyver.case_y))
+        # mac_gyver = MacGyver()
+        self.window.blit(self.mac_gyver, (self.mac_gyver_char.case_x, self.mac_gyver_char.case_y))
         pygame.display.flip()
 
     def start_game(self):
@@ -197,22 +198,22 @@ class MacGyverGame:
 
                 elif event.type == KEYDOWN:
                     if event.key == K_RIGHT:
-                        mac_gyver.move('right')
+                        self.mac_gyver_char.move('right')
                         # window.blit(way,(previousPosition))
                     elif event.key == K_LEFT:
-                        mac_gyver.move('left')
+                        self.mac_gyver_char.move('left')
                         # window.blit(way,(previousPosition))
                     elif event.key == K_UP:
-                        mac_gyver.move('top')
+                        self.mac_gyver_char.move('top')
                         # window.blit(way,(previousPosition))
                     elif event.key == K_DOWN:
-                        mac_gyver.move('bottom')
+                        self.mac_gyver_char.move('bottom')
 
             self.level.display(self.window)
             self.window.blit(self.inventory, (10, 305))
 
-            if (mac_gyver.case_x == self.needle_item.case_x and
-                    mac_gyver.case_y == self.needle_item.case_y and self.needle_item.counter < 1):
+            if (self.mac_gyver_char.case_x == self.needle_item.case_x and
+                    self.mac_gyver_char.case_y == self.needle_item.case_y and self.needle_item.counter < 1):
                 self.needle_item.counter += 1
 
             elif self.needle_item.counter != 1:
@@ -220,39 +221,39 @@ class MacGyverGame:
             else:
                 self.window.blit(self.needle, (170, 305))
 
-            if (mac_gyver.case_x == self.ether_item.case_x
-                    and mac_gyver.case_y == self.ether_item.case_y
+            if (self.mac_gyver_char.case_x == self.ether_item.case_x
+                    and self.mac_gyver_char.case_y == self.ether_item.case_y
                     and self.ether_item.counter < 1):
 
                 self.ether_item.counter += 1
 
             elif self.ether_item.counter != 1:
-                self.window.blit(ETHER, (self.ether_item.case_x, self.ether_item.case_y))
+                self.window.blit(self.ether, (self.ether_item.case_x, self.ether_item.case_y))
             else:
-                self.window.blit(ETHER, (200, 305))
+                self.window.blit(self.ether, (200, 305))
 
-            if (mac_gyver.case_x == self.plastic_tube_item.case_x
-                    and mac_gyver.case_y == self.plastic_tube_item.case_y
+            if (self.mac_gyver_char.case_x == self.plastic_tube_item.case_x
+                    and self.mac_gyver_char.case_y == self.plastic_tube_item.case_y
                     and self.plastic_tube_item.counter < 1):
 
                 self.plastic_tube_item.counter += 1
 
             elif self.plastic_tube_item.counter != 1:
-                self.window.blit(PLASTIC_TUBE, (self.plastic_tube_item.case_x, self.plastic_tube_item.case_y))
+                self.window.blit(self.plastic_tube, (self.plastic_tube_item.case_x, self.plastic_tube_item.case_y))
             else:
-                self.window.blit(PLASTIC_TUBE, (230, 310))
-            self.window.blit(MAC_GYVER, (mac_gyver.case_x, mac_gyver.case_y))
+                self.window.blit(self.plastic_tube, (230, 310))
+            self.window.blit(self.mac_gyver, (self.mac_gyver_char.case_x, self.mac_gyver_char.case_y))
             items = self.needle_item.counter + self.plastic_tube_item.counter + self.ether_item.counter
             pygame.display.flip()
 
-            if get_index(mac_gyver.position_x, mac_gyver.position_y) == 202 and items == 3:
+            if get_index(self.mac_gyver_char.position_x, self.mac_gyver_char.position_y) == 202 and items == 3:
                 self.window.blit(self.text_win, (30, 110))
                 self.window.blit(const.FINISH, (get_position(217)))
                 pygame.display.flip()
                 pygame.time.delay(2000)
                 progress = 0
 
-            elif (get_index(mac_gyver.position_x, mac_gyver.position_y) == 202
+            elif (get_index(self.mac_gyver_char.position_x, self.mac_gyver_char.position_y) == 202
                 and items != 3):
                 self.window.blit(self.text_lost, (30, 110))
                 self.window.blit(const.WAY, (get_position(202)))

@@ -126,6 +126,10 @@ class Item:  # pylint: disable=too-few-public-methods
 
 class MacGyverGame:
 
+    """ Class who manage the
+    character Macgyver
+    """
+
     def __init__(self):
         pygame.init()
         self.window = pygame.display.set_mode((const.RESOLUTION))
@@ -142,16 +146,17 @@ class MacGyverGame:
         self.needle = pygame.transform.scale(needle_image, (19, 19))
         # syringe = pygame.image.load(SYRINGE).convert_alpha()
         # syringe = pygame.transform.scale(syringe,(19,19))
-        plastic_tube_image = pygame.image.load(const.PLASTIC_TUBE_IMG).convert_alpha()
-        self.plastic_tube = pygame.transform.scale(plastic_tube_image, (19, 19))
+        plastic_tube_im = pygame.image.load(const.PLASTIC_TUBE).convert_alpha()
+        self.plastic_tube = pygame.transform.scale(plastic_tube_im, (19, 19))
         self.mac_gyver_char = MacGyver()
 
         """ Writing """
+
         self.comic_font = pygame.font.SysFont('Comic Sans MS', 45)
         self.comic_font_inv = pygame.font.SysFont('Comic Sans MS', 15)
-        self.text_win = self.comic_font.render("YOU WIN !", True, (255, 255, 255))
-        self.text_lost = self.comic_font.render("YOU LOST !", True, (255, 255, 255))
-        self.inventory = self.comic_font_inv.render(" INVENTORY: ", True, (255, 255, 255))
+        self.t_win = self.comic_font.render("YOU WIN !", True, (255, 255, 255))
+        self.lost = self.comic_font.render("YOU LOST !", True, (255, 255, 255))
+        self.invent = self.comic_font_inv.render(" INVENTORY: ", True, (255, 255, 255))
 
     def load_map(self, src):
 
@@ -181,12 +186,14 @@ class MacGyverGame:
         self.window.blit(self.ether, (self.ether_item.case_x, self.ether_item.case_y))
         self.window.blit(self.plastic_tube, (self.plastic_tube_item.case_x, self.plastic_tube_item.case_y))
 
-
         # mac_gyver = MacGyver()
         self.window.blit(self.mac_gyver, (self.mac_gyver_char.case_x, self.mac_gyver_char.case_y))
         pygame.display.flip()
 
     def start_game(self):
+
+        """ Method to launch the game """
+
         progress = 1
         while progress:  # Loop of the game
             pygame.time.Clock().tick(30)
@@ -210,7 +217,7 @@ class MacGyverGame:
                         self.mac_gyver_char.move('bottom')
 
             self.level.display(self.window)
-            self.window.blit(self.inventory, (10, 305))
+            self.window.blit(self.invent, (10, 305))
 
             if (self.mac_gyver_char.case_x == self.needle_item.case_x and
                     self.mac_gyver_char.case_y == self.needle_item.case_y and self.needle_item.counter < 1):
@@ -247,15 +254,15 @@ class MacGyverGame:
             pygame.display.flip()
 
             if get_index(self.mac_gyver_char.position_x, self.mac_gyver_char.position_y) == 202 and items == 3:
-                self.window.blit(self.text_win, (30, 110))
+                self.window.blit(self.t_win, (30, 110))
                 self.window.blit(const.FINISH, (get_position(217)))
                 pygame.display.flip()
                 pygame.time.delay(2000)
                 progress = 0
 
             elif (get_index(self.mac_gyver_char.position_x, self.mac_gyver_char.position_y) == 202
-                and items != 3):
-                self.window.blit(self.text_lost, (30, 110))
+                  and items != 3):
+                self.window.blit(self.lost, (30, 110))
                 self.window.blit(const.WAY, (get_position(202)))
                 pygame.display.flip()
                 pygame.time.delay(2000)
